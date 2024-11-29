@@ -1,15 +1,13 @@
 import socket
 import json
 
-plate_json = {
-    "plate_id": 1,
-    "level 1" : 1,
-}
+
+plate_id = 1
 
 
 
 def start_client(server_host, server_port):
-    global plate_json
+    global plate_id
     # Create a TCP socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
@@ -19,7 +17,10 @@ def start_client(server_host, server_port):
         print(f'Connected to server at {server_host}:{server_port}')
         
         while True:
-            s = input()
+            id = int(input())
+            plate_json = {
+                'plate_id' : id
+            }
             # Send a message to the server
             message = json.dumps(plate_json, indent=2)
             if message.lower() == 'exit':
