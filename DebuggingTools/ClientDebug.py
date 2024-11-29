@@ -1,6 +1,15 @@
 import socket
+import json
+
+plate_json = {
+    "plate_id": 1,
+    "level 1" : 1,
+}
+
+
 
 def start_client(server_host, server_port):
+    global plate_json
     # Create a TCP socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
@@ -10,8 +19,9 @@ def start_client(server_host, server_port):
         print(f'Connected to server at {server_host}:{server_port}')
         
         while True:
+            s = input()
             # Send a message to the server
-            message = input('Enter message to send to server: ')
+            message = json.dumps(plate_json, indent=2)
             if message.lower() == 'exit':
                 break
             client_socket.send(message.encode())
