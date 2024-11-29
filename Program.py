@@ -3,8 +3,8 @@ from Server import Server
 import threading
 import json
 
-clients = {} #structure of {plate_id: { user_id: 0
-             #                          user_password: 0
+clients = {} #structure of {plate_id(key): { 'user_id': 0
+             #                          'user_password': 0
              #                         'level 1 start time': 0,
              #                         'level 1 stars': 0,
              #                          .
@@ -16,18 +16,21 @@ clients = {} #structure of {plate_id: { user_id: 0
 
 
 def receive(message):
+    #message = { plate_id: 0,
+    #            user_id: 0,
+    #            user_password: 0,    }
     global clients
-    message = json.loads(message)
-    client_plates[message['plate_id']] = 1
-    print(client_plates)
+    clients[message['plate_id']] = pullUserInfoFromDB(message['user_id'], message['user_password'])
 
-def respond():
-    return 'balls'
+def respond(message):
+    return clients[message['plate_id']]
 
 
 def onPress():
     print('k')
 
+def pullUserInfoFromDB(user_id, user_password):
+    return ''
 
 def main():
     global client_plates

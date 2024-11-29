@@ -38,5 +38,5 @@ class Server:
             client_thread = threading.Thread(target=self.handle_client,
                                              args=(client_socket, client_address, receive_command, response_command))
             client_thread.start()
-            print(f'Active connections: {threading.active_count() - 1}')
+            print(f'Device connections: {threading.active_count() - 2}')
 
