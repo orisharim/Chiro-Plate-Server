@@ -1,10 +1,6 @@
 import socket
 import json
-
-
 plate_id = 1
-
-
 
 def start_client(server_host, server_port):
     global plate_id
@@ -19,7 +15,7 @@ def start_client(server_host, server_port):
         while True:
             id = int(input())
             plate_json = {
-                'plate_id' : id
+                'user_id' : id
             }
             # Send a message to the server
             message = json.dumps(plate_json, indent=2)

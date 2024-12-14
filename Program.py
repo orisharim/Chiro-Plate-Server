@@ -2,51 +2,60 @@ import tkinter as tk
 from Server import Server
 import threading
 import json
+from Database import Database
+import Settings 
 
-clients = {} #structure of {plate_id(key): { 'user_id': 0
-             #                          'user_password': 0
-             #                         'level 1 start time': 0,
-             #                         'level 1 stars': 0,
-             #                          .
-             #                          .
-             #                          .
-             #                          'level 10 start time' : 0,
-             #                          'level 1 stars' : 0
-             #                            }}
+database = Database(Settings.DB_KEY)
+clients = {}  # structure of {plate_id(key): { 'user_id': 0
+
+
+#                               'user_password': 0
+#                               'level_1_duration': 0,
+#                               'level_1_difficulty': 0,
+#                               .
+#                               .
+#                               .
+#                               'level_x_duration' : 0,
+#                               'level_x_difficulty' : 0
+#                            }}
 
 
 def receive(message):
-    #message = { plate_id: 0,
+    # message = { plate_id: 0,
     #            user_id: 0,
     #            user_password: 0,    }
-    global clients
-    clients[message['plate_id']] = pullUserInfoFromDB(message['user_id'], message['user_password'])
+    global clients, database
+    message = json.loads(message)
+    user_info = database.get_user(message['user_id']).get_dict()
+    print(user_info)
+    # clients[message['plate_id']] = 
+
 
 def respond(message):
-    return clients[message['plate_id']]
-
-
-def onPress():
-    print('k')
-
-def pullUserInfoFromDB(user_id, user_password):
+    # return clients[message['plate_id']]
     return ''
 
-def main():
-    global client_plates
 
-    #setup screen
+def on_press():
+    print()
+
+
+
+
+def main():
+    global database
+    # setup screen
     screen = tk.Tk()
     screen.title('chiro plate')
-    button = tk.Button(screen, text='Send', width=25, command=onPress)
+    button = tk.Button(screen, text='Send', width=25, command=on_press)
     button.pack()
 
-    #setup server
+    # setup server
     server = Server('localhost', 12345)
     server_thread = threading.Thread(target=server.start_server,
                                      args=(receive, respond))
 
-    #execution
+    # execution
     server_thread.start()
     screen.mainloop()
 
