@@ -1,10 +1,6 @@
 import socket
 import json
-
-
 plate_id = 1
-
-
 
 def start_client(server_host, server_port):
     global plate_id
