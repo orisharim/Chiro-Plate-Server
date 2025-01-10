@@ -19,7 +19,7 @@ class Server:
             receive_command(message)
 
             # Send a response back to the client
-            response = response_command()
+            response = response_command(message)
             client_socket.send(response.encode())
 
         # Close the client socket
@@ -38,5 +38,5 @@ class Server:
             client_thread = threading.Thread(target=self.handle_client,
                                              args=(client_socket, client_address, receive_command, response_command))
             client_thread.start()
-            print(f'Device connections: {threading.active_count() - 2}')
+            print(f'Device connections: {threading.active_count() - 2}')  # Exclude the main and server threads
 

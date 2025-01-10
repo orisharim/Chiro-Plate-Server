@@ -3,12 +3,14 @@ from Server import Server
 import threading
 import json
 from Database import Database
-import Settings 
+from User import User
+import Settings
 
+screen = tk.Tk()
+server = Server(Settings.SERVER_IP, Settings.SERVER_PORT)
 database = Database(Settings.DB_KEY)
-clients = {}  # structure of {plate_id(key): { 'user_id': 0
-
-
+clients = {}  # structure of {plate_id(key): {
+#                               'user_id': 0
 #                               'user_password': 0
 #                               'level_1_duration': 0,
 #                               'level_1_difficulty': 0,
@@ -19,39 +21,46 @@ clients = {}  # structure of {plate_id(key): { 'user_id': 0
 #                               'level_x_difficulty' : 0
 #                            }}
 
-
 def receive(message):
-    # message = { plate_id: 0,
+    # message = {
+    #            message_type: 0 (0 login)
+    #            plate_id: 0,
     #            user_id: 0,
     #            user_password: 0,    }
+
     global clients, database
     message = json.loads(message)
     user_info = database.get_user(message['user_id']).get_dict()
     print(user_info)
-    # clients[message['plate_id']] = 
 
 
 def respond(message):
-    # return clients[message['plate_id']]
-    return ''
+    global clients, database
+    message = json.loads(message)
+    user_info = database.get_user(message['user_id']).get_dict()
+    user_info_json = json.dumps(user_info)
+    return user_info_json
+
+
+def create_user(user_id, user_password):
+    user = User(user_id=user_id, user_password=user_password)
+    database.add_user(user)
 
 
 def on_press():
-    print()
 
-
+    create_user(user_id=(1234), user_password=('balls'))
 
 
 def main():
-    global database
+    global database, screen, server
+
     # setup screen
-    screen = tk.Tk()
     screen.title('chiro plate')
     button = tk.Button(screen, text='Send', width=25, command=on_press)
     button.pack()
 
     # setup server
-    server = Server('localhost', 12345)
     server_thread = threading.Thread(target=server.start_server,
                                      args=(receive, respond))
 

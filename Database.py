@@ -22,18 +22,3 @@ class Database:
         user_info = user.get_dict()
         self.client.collection('users').document(str(user_id)).set(user_info)
 
-    # def update_user(self):
-
-#     user_info = user_ref.get().to_dict()
-# # Add a new doc in collection 'cities' with ID 'LA'
-# db.collection("users").document('331661322').set(data)
-
-# doc_ref = db.collection("users").document("331661322")
-# doc = doc_ref.get()
-# print(doc.to_dict())
-
-# def get_user(user_id : int):
-#     user_ref = db.collection("users").document(str(user_id))
-#     user_info = user_ref.get().to_dict()
-
-#     return
